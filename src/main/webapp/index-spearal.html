@@ -60,14 +60,12 @@
 	            action.transformRequest = [ encode ];
 	            action.transformResponse = [ decode ];
 	            action.headers = angular.copy(contentTypeHeaders);
-	            /*
 	            if (method === "query") {
 	                action.headers[Spearal.PROPERTY_FILTER_HEADER] = Spearal.filterHeader(
-	                    "com.cortez.samples.javaee7angular.data.Person",
+	                    "com.cortez.samples.springangular.data.Person",
 	                    "id", "name", "description"
 	                );
 	            }
-	            */
 	        }
 	    }]);
     </script>
@@ -75,7 +73,7 @@
 
 <body>
 
-<h1>Java EE - AngularJS (Spearal Serialization)</h1>
+<h1>Spring - AngularJS (Spearal Serialization)</h1>
 
 <br/>
 
