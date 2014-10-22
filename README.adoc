@@ -1,16 +1,24 @@
-# Java EE 7 - Angular - Sample Application #
+= Spring - Angular - Sample Application
 
-## How to run ? ##
+== How to run ?
 
-* You need JDK 7 or higher, Maven 3 and Wildfly 8 to run the application.
+* You need JDK 7 or higher and Maven 3 to run the application.
 
-* Build the code using Maven with the command: `mvn clean install`.
+* Build the code using Maven with the command: 
+----
+mvn clean install
+----
 
-* Copy the file javaee7-angular-3.1.war from target directory to your Wildfly installation folder /standalone/deployments
+* Start Tomcat with 
+----
+mvn tomcat7:run
+----
 
-* Start Wildfly and go to http://localhost:8080/javaee7-angular-3.1/
+* Then go to http://localhost:8080/spring-angular/
 
-## Javascript Package Management (optional) ##
+Alternatively you can deploy the file spring-angular.war from the target directory to a full Tomcat installation +/webapps+.
+
+== Javascript Package Management (optional)
 
 * The required JS libraries are included in the project, but it also possible to manage them with the next steps.
 
