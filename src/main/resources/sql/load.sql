@@ -19,3 +19,6 @@ INSERT INTO PERSON("ID", "NAME", "DESCRIPTION", "IMAGEURL") VALUES (18, 'Sarutob
 INSERT INTO PERSON("ID", "NAME", "DESCRIPTION", "IMAGEURL") VALUES (19, 'Tsunade', 'Konoha', 'http://img2.wikia.nocookie.net/__cb20140417023105/naruto/images/thumb/1/14/Tsunade_newshot.png/300px-Tsunade_newshot.png');
 INSERT INTO PERSON("ID", "NAME", "DESCRIPTION", "IMAGEURL") VALUES (20, 'Orochimaru', 'Missing-nin', 'http://img3.wikia.nocookie.net/__cb20100623204832/naruto/images/thumb/e/e8/Orochimaru2.jpg/300px-Orochimaru2.jpg');
 INSERT INTO PERSON("ID", "NAME", "DESCRIPTION", "IMAGEURL") VALUES (21, 'Uchicha Itachi', 'Missing-nin', 'http://img1.wikia.nocookie.net/__cb20110723152743/naruto/images/thumb/8/8d/UchihaItachi.png/300px-UchihaItachi.png');
+
+-- UPDATE PERSON SET BESTFRIEND_ID = ID+13 WHERE ID+13 <= 21;
+-- UPDATE PERSON SET WORSTENEMY_ID = 22-ID;

@@ -3,9 +3,11 @@ package org.spearal.samples.springangular.data;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 /**
@@ -16,9 +18,9 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Person implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id")
     @SequenceGenerator(name = "id", sequenceName = "id")
     private Long id;
@@ -60,6 +62,29 @@ public class Person implements Serializable {
     public void setImageUrl(String link) {
         this.imageUrl = link;
     }
+/*    
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Person bestFriend;
+    
+    public Person getBestFriend() {
+		return bestFriend;
+	}
+
+	public void setBestFriend(Person bestFriend) {
+		this.bestFriend = bestFriend;
+	}
+	
+	@ManyToOne
+	private Person worstEnemy;
+
+	public Person getWorstEnemy() {
+		return worstEnemy;
+	}
+
+	public void setWorstEnemy(Person worstEnemy) {
+		this.worstEnemy = worstEnemy;
+	}
+*/
 
     @Override
     public boolean equals(Object o) {

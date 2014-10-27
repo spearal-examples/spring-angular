@@ -85,8 +85,9 @@ public class PersonResource {
             personToUpdate.setImageUrl(person.getImageUrl());
             person = entityManager.merge(personToUpdate);
         }
-
         return person;
+
+	// return entityManager.merge(person);
     }
     
     @RequestMapping(method=RequestMethod.DELETE, value="/persons/{id}")

@@ -62,8 +62,8 @@
 	            action.headers = angular.copy(contentTypeHeaders);
 	            if (method === "query") {
 	                action.headers[Spearal.PROPERTY_FILTER_HEADER] = Spearal.filterHeader(
-	                    "com.cortez.samples.springangular.data.Person",
-	                    "id", "name", "description"
+	                    "org.spearal.samples.springangular.data.Person",
+	                    "id", "name", "description", "worstEnemy"
 	                );
 	            }
 	        }
