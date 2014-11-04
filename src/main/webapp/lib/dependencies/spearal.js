@@ -14,7 +14,7 @@ var Spearal = function Spearal() {
     "use strict";
     for (var propertyNames = [],
         $__1 = 1; $__1 < arguments.length; $__1++)
-      $traceurRuntime.setProperty(propertyNames, $__1 - 1, arguments[$traceurRuntime.toProperty($__1)]);
+      propertyNames[$traceurRuntime.toProperty($__1 - 1)] = arguments[$traceurRuntime.toProperty($__1)];
     return className + '#' + propertyNames.join(',');
   }
 });
@@ -169,9 +169,9 @@ var SpearalContext = function SpearalContext() {
   _findConfigurable: function(name) {
     "use strict";
     var param = arguments[1];
-    for (var $__3 = this._configurables[$traceurRuntime.toProperty(Symbol.iterator)](),
-        $__4; !($__4 = $__3.next()).done; ) {
-      var configurable = $__4.value;
+    for (var $__1 = this._configurables[$traceurRuntime.toProperty(Symbol.iterator)](),
+        $__2; !($__2 = $__1.next()).done; ) {
+      var configurable = $__2.value;
       {
         var configurableFunction = configurable[$traceurRuntime.toProperty(name)];
         if (configurableFunction !== undefined) {
@@ -295,18 +295,6 @@ var _SpearalEncoderBuffer = function _SpearalEncoderBuffer() {
     }
   }
 }, {});
-var _IndexedMap = function _IndexedMap(iterable) {
-  "use strict";
-  $traceurRuntime.superCall(this, $_IndexedMap.prototype, "constructor", [iterable]);
-};
-var $_IndexedMap = _IndexedMap;
-($traceurRuntime.createClass)(_IndexedMap, {setIfAbsent: function(key) {
-    "use strict";
-    var index = this.get(key);
-    if (index !== undefined)
-      return index;
-    this.set(key, this.size);
-  }}, {}, Map);
 var SpearalPropertyFilter = function SpearalPropertyFilter() {
   "use strict";
   this._filters = new Map();
@@ -315,8 +303,8 @@ var SpearalPropertyFilter = function SpearalPropertyFilter() {
   set: function(className) {
     "use strict";
     for (var propertyNames = [],
-        $__8 = 1; $__8 < arguments.length; $__8++)
-      $traceurRuntime.setProperty(propertyNames, $__8 - 1, arguments[$traceurRuntime.toProperty($__8)]);
+        $__3 = 1; $__3 < arguments.length; $__3++)
+      propertyNames[$traceurRuntime.toProperty($__3 - 1)] = arguments[$traceurRuntime.toProperty($__3)];
     if (!(propertyNames instanceof Set))
       propertyNames = new Set(propertyNames);
     this._filters.set(className, propertyNames);
@@ -338,8 +326,8 @@ var SpearalEncoder = function SpearalEncoder(context, filter) {
   this._context = context;
   this._filter = (filter != null ? filter : new SpearalPropertyFilter());
   this._buffer = new _SpearalEncoderBuffer();
-  this._sharedStrings = new _IndexedMap();
-  this._sharedObjects = new _IndexedMap();
+  this._sharedStrings = new Map();
+  this._sharedObjects = new Map();
 };
 var $SpearalEncoder = SpearalEncoder;
 ($traceurRuntime.createClass)(SpearalEncoder, {
@@ -466,9 +454,9 @@ var $SpearalEncoder = SpearalEncoder;
     if (!this._setAndWriteObjectReference(SpearalType.COLLECTION, value)) {
       var size = (value instanceof Set ? value.size : value.length);
       this._writeTypeUintN(SpearalType.COLLECTION, size);
-      for (var $__6 = value[$traceurRuntime.toProperty(Symbol.iterator)](),
-          $__7; !($__7 = $__6.next()).done; ) {
-        var item = $__7.value;
+      for (var $__1 = value[$traceurRuntime.toProperty(Symbol.iterator)](),
+          $__2; !($__2 = $__1.next()).done; ) {
+        var item = $__2.value;
         this.writeAny(item);
       }
     }
@@ -477,11 +465,11 @@ var $SpearalEncoder = SpearalEncoder;
     "use strict";
     if (!this._setAndWriteObjectReference(SpearalType.MAP, value)) {
       this._writeTypeUintN(SpearalType.MAP, value.size);
-      for (var $__6 = value[$traceurRuntime.toProperty(Symbol.iterator)](),
-          $__7; !($__7 = $__6.next()).done; ) {
-        var $__9 = $__7.value,
-            key = $__9[0],
-            val = $__9[1];
+      for (var $__1 = value[$traceurRuntime.toProperty(Symbol.iterator)](),
+          $__2; !($__2 = $__1.next()).done; ) {
+        var $__4 = $__2.value,
+            key = $__4[0],
+            val = $__4[1];
         {
           this.writeAny(key);
           this.writeAny(val);
@@ -503,9 +491,9 @@ var $SpearalEncoder = SpearalEncoder;
     if (!this._setAndWriteObjectReference(SpearalType.BEAN, value)) {
       var descriptor = this._context.getDescriptor(value, this._filter);
       this._writeStringData(SpearalType.BEAN, descriptor.description);
-      for (var $__6 = descriptor.propertyNames[$traceurRuntime.toProperty(Symbol.iterator)](),
-          $__7; !($__7 = $__6.next()).done; ) {
-        var name = $__7.value;
+      for (var $__1 = descriptor.propertyNames[$traceurRuntime.toProperty(Symbol.iterator)](),
+          $__2; !($__2 = $__1.next()).done; ) {
+        var name = $__2.value;
         this.writeAny(value[$traceurRuntime.toProperty(name)]);
       }
     }
@@ -550,20 +538,22 @@ var $SpearalEncoder = SpearalEncoder;
   },
   _setAndWriteObjectReference: function(type, value) {
     "use strict";
-    var index = this._sharedObjects.setIfAbsent(value);
+    var index = this._sharedObjects.get(value);
     if (index !== undefined) {
       this._writeTypeUintN(type | 0x08, index);
       return true;
     }
+    this._sharedObjects.set(value, this._sharedObjects.size);
     return false;
   },
   _setAndWriteStringReference: function(type, value) {
     "use strict";
-    var index = this._sharedStrings.setIfAbsent(value);
+    var index = this._sharedStrings.get(value);
     if (index !== undefined) {
       this._writeTypeUintN(type | 0x04, index);
       return true;
     }
+    this._sharedStrings.set(value, this._sharedStrings.size);
     return false;
   },
   _writeTypeUintN: function(type, value) {
@@ -823,7 +813,7 @@ var $SpearalDecoder = SpearalDecoder;
     var value = new Array(indexOrLength);
     this._sharedObjects.push(value);
     for (var i = 0; i < indexOrLength; i++)
-      $traceurRuntime.setProperty(value, i, this.readAny());
+      value[$traceurRuntime.toProperty(i)] = this.readAny();
     return value;
   },
   _readMap: function(parameterizedType) {
@@ -862,10 +852,10 @@ var $SpearalDecoder = SpearalDecoder;
         descriptor = _SpearalClassDescriptor.forDescription(description),
         value = this._context.getInstance(descriptor);
     this._sharedObjects.push(value);
-    for (var $__11 = descriptor.propertyNames[$traceurRuntime.toProperty(Symbol.iterator)](),
-        $__12; !($__12 = $__11.next()).done; ) {
-      var name = $__12.value;
-      $traceurRuntime.setProperty(value, name, this.readAny());
+    for (var $__1 = descriptor.propertyNames[$traceurRuntime.toProperty(Symbol.iterator)](),
+        $__2; !($__2 = $__1.next()).done; ) {
+      var name = $__2.value;
+      value[$traceurRuntime.toProperty(name)] = this.readAny();
     }
     return value;
   },
@@ -922,10 +912,11 @@ var SpearalFactory = function SpearalFactory() {
       if (filter == null)
         filter = SpearalPropertyFilter.ACCEPT_ALL;
       var propertyNames = [];
-      for (var property in value) {
-        if (property !== '_class' && value.hasOwnProperty(property) && filter.has(property))
-          propertyNames.push(property);
-      }
+      for (var property in value)
+        if (!$traceurRuntime.isSymbolString(property)) {
+          if (property !== '_class' && value.hasOwnProperty(property) && filter.has(property))
+            propertyNames.push(property);
+        }
       return new _SpearalClassDescriptor(className, propertyNames);
     },
     encoder: function(value) {
