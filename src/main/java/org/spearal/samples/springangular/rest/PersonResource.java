@@ -86,8 +86,8 @@ public class PersonResource {
             person = entityManager.merge(personToUpdate);
         }
         return person;
-
-	// return entityManager.merge(person);
+    	
+    	// return entityManager.merge(person);
     }
     
     @RequestMapping(method=RequestMethod.DELETE, value="/persons/{id}")
